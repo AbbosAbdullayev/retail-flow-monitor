@@ -1,0 +1,61 @@
+# Queue/counter config. zones / zone_names / roles / pairs are per video;
+# counting, alerts and output are shared. Keys are the video filename (no .mp4).
+
+# Draw order per video (draw_zone.py loops these).
+zone_names:
+  supermarket_demo: [service_1, service_2, service_3, staff_1, staff_2]
+  cctv_demo1: [service_1, service_2, service_3, staff_1, staff_2]
+
+# Polygons per video (filled by draw_zone.py).
+zones:
+  supermarket_demo:
+    service_1: [[[439, 129], [325, 550], [436, 563], [500, 142]]]
+    service_2: [[[653, 37], [726, 518], [915, 524], [774, 57]]]
+    service_3: [[[959, 40], [1214, 482], [1278, 449], [1082, 42]]]
+    staff_1: [[[510, 145], [481, 428], [580, 443], [610, 165]]]
+    staff_2: [[[843, 180], [911, 431], [1040, 391], [984, 176]]]
+  cctv_demo1:
+    service_1: [[[575, 518], [686, 552], [578, 894], [443, 835]]]
+    service_2: [[[1101, 538], [1177, 868], [1310, 876], [1205, 550]]]
+    service_3: [[[1603, 888], [1340, 940], [1354, 1003], [1654, 1003]]]
+    staff_1: [[[178, 424], [350, 457], [243, 584], [176, 575]]]
+    staff_2: [[[1380, 408], [1420, 485], [1565, 484], [1467, 402]]]
+
+# Which zones are queues vs staff, per video.
+roles:
+  supermarket_demo:
+    queue:   [service_1, service_2, service_3]
+    counter: [staff_1, staff_2]
+  cctv_demo1:
+    queue:   [service_1, service_2, service_3]
+    counter: [staff_1, staff_2]
+
+# Staff<->queue pairing per video [queue, staff].
+pairs:
+  supermarket_demo:
+    - [service_2, staff_1]
+    - [service_3, staff_2]
+  cctv_demo1:
+    - [service_2, staff_1]
+    - [service_3, staff_2]
+
+counting:
+  box: 30             # patch size (px) at the box centre
+  overlap: 0.51       # min patch-in-zone fraction to count as inside
+  enter_seconds: 0.4  # time inside to confirm entry
+  exit_seconds: 0.5   # time outside to confirm exit
+  grace_seconds: 0.6  # keep state through a brief ID dropout
+  stay: 0.20          # keep in zone while this much of the box still covers it
+
+alerts:
+  queue_alert:
+    min_people: 3        # N people in a queue...
+    for_seconds: 10      # ...for T seconds
+  empty_counter:
+    for_seconds: 10      # staff empty T seconds while its queue has someone
+  release_seconds: 1     # delay before a fired alert clears
+
+output:
+  events_path: output/events.jsonl   # alert events (per source: <name>_events.jsonl)
+  csv_path: output/queue_minute.csv  # per-minute CSV (per source: <name>_queue_minute.csv)
+  interval_sec: 60                   # CSV row period in seconds

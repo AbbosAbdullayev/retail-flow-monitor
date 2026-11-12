@@ -7,14 +7,13 @@ fully config-driven.
 
 ## Download the videos
 
-The sample clips (and the annotated result video) are hosted on Google Drive.
-Fetch them with:
+The sample clips are in a shared Google Drive
+[folder](https://drive.google.com/drive/folders/12ac4PAFBlsZxEGsz4ktb5EPAbmBU42kD).
+Fetch them into `videos/` with:
 
 ```
 ./download_videos.sh
 ```
-
-Input clips land in `videos/`, output videos in `results/`.
 
 Video sample source:
 - `entrance_door` — https://www.youtube.com/watch?v=gmffknydiDI

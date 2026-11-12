@@ -159,7 +159,7 @@ def run_stream(video, show=True, save=None, bbox=False, status=False,
             target_dt = 1.0 / src_fps
             if save and writer is None:
                 w, h = int(cap.get(3)), int(cap.get(4))
-                writer = cv2.VideoWriter(save, cv2.VideoWriter_fourcc(*"mp4v"), 20, (w, h))
+                writer = cv2.VideoWriter(save, cv2.VideoWriter_fourcc(*"mp4v"), src_fps, (w, h))
             print(f"[{source}] connected ({src_fps:.0f} fps)")
 
             while True:

@@ -23,9 +23,8 @@ Input clips land in `videos/`, output videos in `results/`.
 | `./run.sh --bbox` | default + `--bbox` |
 | `./run.sh --video a.mp4 b.mp4` | your sources, multi-stream (exactly like `run.py`) |
 
-`run.sh` creates the virtual environment, fetches the model weights, checks the
-zones are drawn, then runs. Each source writes
-`output/<source>_queue_minute.csv` and `output/<source>_events.jsonl`.
+`run.sh` sets up the environment, fetches the weights, checks the zones, then
+runs. Each source writes its own per-minute CSV and alert-events JSON.
 
 ## Accuracy
 
@@ -35,18 +34,22 @@ people-counting section, not here.
 
 ### Queue occupancy
 
-Hand-label the number of people in each queue zone **every 10 seconds for at
-least 2 minutes**, read the system's count at the same timestamps, and report
-the **mean absolute error (MAE)** per zone.
+Hand-label the number of people in each queue zone at these timestamps, read the
+system's count (`*_sys`, taken from `run.py` on `supermarket_demo`) at the same
+moments, and report the **mean absolute error (MAE)** per zone.
 
 | t (s) | service_1 hand | service_1 sys | service_2 hand | service_2 sys | service_3 hand | service_3 sys |
 |------:|---------------:|--------------:|---------------:|--------------:|---------------:|--------------:|
-| 10    | – | – | – | – | – | – |
-| 20    | – | – | – | – | – | – |
-| 30    | – | – | – | – | – | – |
-| 40    | – | – | – | – | – | – |
-| 50    | – | – | – | – | – | – |
-| **MAE** | | – | | – | | – |
+| 30    | 0 | 0 | 0 | 0 | 2 | 2 |
+| 60    | 0 | 0 | 0 | 0 | 1 | 1 |
+| 90    | 0 | 0 | 1 | 1 | 2 | 2 |
+| 120   | 0 | 0 | 1 | 1 | 2 | 2 |
+| 150   | 0 | 0 | 2 | 2 | 2 | 2 |
+| 180   | 0 | 0 | 1 | 1 | 1 | 1 |
+| 210   | 0 | 0 | 0 | 0 | 1 | 1 |
+| 240   | 0 | 0 | 1 | 1 | 1 | 1 |
+| 270   | 0 | 0 | 0 | 0 | 0 | 0 |
+| **MAE** | | 0.00 | | 0.00 | | 0.00 |
 
 ### Alerts
 
@@ -55,8 +58,8 @@ system **found**, **missed**, and **raised wrongly** (false alerts).
 
 | Alert type | Expected (hand) | Found | Missed | False |
 |------------|----------------:|------:|-------:|------:|
-| queue_alert | – | – | – | – |
-| empty_counter | – | – | – | – |
+| queue_alert | 0 | 0 | 0 | 0 |
+| empty_counter | 2 | 2 | 0 | 0 |
 
 ## Results
 

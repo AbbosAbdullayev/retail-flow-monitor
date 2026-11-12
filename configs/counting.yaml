@@ -1,0 +1,33 @@
+detection:
+  weights: weights/yolo26s.pt
+  conf: 0.3
+  iou: 0.5
+  imgsz: 640
+  classes: [0]          # 0 = person (COCO)
+  device: cuda:0
+  half: true
+
+tracking:
+  reid_weights: weights/osnet_x0_25_msmt17.pt
+  device: cuda:0
+  half: false
+  with_reid: false
+  cmc_method: sof        # camera-motion comp: sof (robust to shake) | ecc | orb | sift | none
+  track_buffer: 75       # frames a lost track survives (Kalman coasting ~2.5s @30fps)
+  match_thresh: 0.8
+  track_high_thresh: 0.5
+  track_low_thresh: 0.1
+  new_track_thresh: 0.6
+
+counting:
+  lines: [[[387, 405], [771, 402]], [[386, 601], [772, 597]]]   # counting lines; set with draw_line.py
+  confirm_frames: 3     # frames a zone must hold before it counts (debounce)
+  cooldown: 25          # frames an ID is locked after a count (~1s @25fps)
+  min_age: 5            # frames a track must exist before it can count
+  min_travel: 30        # pixels the foot point must have moved before it can count
+
+recording:
+  csv_path: output/counts.csv
+  interval_sec: 30       # one CSV row per source every N seconds
+  dwell_threshold_sec: 10  # a person in BAND/IN this long flags the loiter column (informative)
+

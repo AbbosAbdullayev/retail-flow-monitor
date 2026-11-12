@@ -39,13 +39,14 @@ Hand-label the number of people in each queue zone **every 10 seconds for at
 least 2 minutes**, read the system's count at the same timestamps, and report
 the **mean absolute error (MAE)** per zone.
 
-| t (s) | service_2 hand | service_2 sys | service_3 hand | service_3 sys |
-|------:|---------------:|--------------:|---------------:|--------------:|
-| 0     | – | – | – | – |
-| 10    | – | – | – | – |
-| …     | – | – | – | – |
-| 120   | – | – | – | – |
-| **MAE** | | – | | – |
+| t (s) | service_1 hand | service_1 sys | service_2 hand | service_2 sys | service_3 hand | service_3 sys |
+|------:|---------------:|--------------:|---------------:|--------------:|---------------:|--------------:|
+| 10    | – | – | – | – | – | – |
+| 20    | – | – | – | – | – | – |
+| 30    | – | – | – | – | – | – |
+| 40    | – | – | – | – | – | – |
+| 50    | – | – | – | – | – | – |
+| **MAE** | | – | | – | | – |
 
 ### Alerts
 
@@ -59,28 +60,20 @@ system **found**, **missed**, and **raised wrongly** (false alerts).
 
 ## Results
 
-Annotated output videos (zones, counts, `[id:time]`, alert banner) are in
-`results/` after running `download.py`:
+Annotated output videos are in `results/` after running `./download_videos.sh`:
 
 - `results/supermarket_demo_out.mp4`
 - `results/cctv_demo1_out.mp4`
 
-You can also regenerate them locally with `--save`, e.g.
-`python run.py --video ./videos/supermarket_demo.mp4 --status --save results/supermarket_demo_out.mp4`.
-
 ## Screenshots
 
-<p>
-  <img src="assets/view_counts.png" width="49%"/>
-  <img src="assets/view_alert.png" width="49%"/>
-</p>
+![zones and counts](assets/view_counts.png)
+
+![alert banner](assets/view_alert.png)
 
 ## Architecture
 
-Each camera is run through YOLO detection and BoT-SORT tracking. A track is
-assigned to at most one zone from the overlap of a patch at its box centre,
-confirmed over a short enter/exit time, with an exit guard and a grace period for
-dropped ids. From the memberships the system produces per-zone counts, a waiting
-timer per person, queue / empty-counter alerts, and a per-minute CSV.
+Each person is placed in one zone, which gives the per-zone counts, a waiting
+timer, the queue and empty-counter alerts, and the per-minute CSV.
 
-Full method and flowchart: [PIPELINE.md](PIPELINE.md).
+Full method and flowchart: [PIPELINE.md](PIPELINE.md)

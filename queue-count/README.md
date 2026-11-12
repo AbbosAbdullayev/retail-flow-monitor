@@ -15,6 +15,9 @@ Drive. Fetch them all with:
 
 Input clips land in `videos/`, output videos in `results/`.
 
+Video sample source:
+- `supermarket_demo` — https://www.youtube.com/watch?v=-8zyEwAa50Q
+
 ## Running
 
 | Command | Runs |

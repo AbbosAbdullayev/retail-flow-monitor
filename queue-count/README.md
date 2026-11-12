@@ -39,7 +39,9 @@ people-counting section, not here.
 
 Hand-label the number of people in each queue zone at these timestamps, read the
 system's count (`*_sys`, taken from `run.py` on `supermarket_demo`) at the same
-moments, and report the **mean absolute error (MAE)** per zone.
+moments, and report the **mean absolute error (MAE)** per zone. The hand counts
+were read from the annotated frames in [`measure/`](measure/), one per
+timestamp (`30.png`, `60.png`, … `270.png`).
 
 | t (s) | service_1 hand | service_1 sys | service_2 hand | service_2 sys | service_3 hand | service_3 sys |
 |------:|---------------:|--------------:|---------------:|--------------:|---------------:|--------------:|
